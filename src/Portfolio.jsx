@@ -108,15 +108,15 @@ const Portfolio = () => {
     {
       title: "Gearbox Group Design Project",
       tags: ["Machine Design", "SolidWorks", "Power Transmission", "Fatigue Analysis", "3D Printing", "AGMA"],
-      summary: "Designed a single-stage spur gear transmission system across four phases, from initial gear selection through fatigue verification, shaft analysis, and 3D printed prototyping. The gearbox successfully passed both the top speed and hill climb events in competition.",
+      summary: "Designed and prototyped a single-stage spur gear transmission system across four project phases. The gearbox successfully passed both the top speed and hill climb events in competition.",
       details: [
-        "Selected a 3:1 gear ratio using a 15-tooth pinion and 45-tooth gear with a 1.5 mm module and 15 mm face width, achieving a center distance of 45 mm within the required design envelope.",
-        "Performed AGMA-based gear fatigue analysis for bending and contact stress. The pinion achieved a bending safety factor of 2.5 and the gear achieved 3.8, with both gears passing contact fatigue at a safety factor of 1.9.",
-        "Conducted full shaft fatigue analysis using the DE-Gerber criterion, identifying the pinion shaft as the most critical component with a safety factor of 1.02 at the keyway location.",
-        "Adapted the design for 3D printing by replacing keyways with hex shaft sections, removing retaining rings, and increasing the pinion shaft diameter by 15% to improve the weakest safety factor.",
-        "Designed a two-part housing with dovetail connections, bushing supports, and D-profile shaft ends for sprocket attachment, all within a 110 x 80 x 60 mm footprint.",
-        "Delivered the final prototype within the 7.45-hour print time limit, designed for continuous operation over 5 years (approximately 1.31 x 10^8 cycles at 50 RPM).",
-        "Developed detailed CAD models, engineering drawings, and a full bill of materials in SolidWorks."
+        "Selected gear geometry and ratio to balance torque and speed requirements for both race events, keeping the design compact and within the required envelope.",
+        "Performed gear fatigue analysis using AGMA standards, verifying that both gears passed bending and contact fatigue with comfortable safety margins.",
+        "Conducted shaft fatigue analysis to identify critical failure points and improved the weakest shaft by increasing its diameter for the final prototype.",
+        "Adapted the full design for 3D printing by replacing keyways with hex profiles, removing retaining rings, and adding clearances for printed assembly.",
+        "Designed a two-part housing with dovetail connections, bushing supports, and shaft ends shaped for sprocket attachment.",
+        "Delivered the final printed prototype within the allowed print time, designed for continuous long-term operation.",
+        "Created all CAD models, engineering drawings, and a bill of materials in SolidWorks."
       ]
     },
     {
