@@ -23,7 +23,20 @@ const Portfolio = () => {
     };
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  // Scroll reveal: fade sections in as you scroll down
+  useEffect(() => {
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+        }
+      });
+    }, { threshold: 0.1 });
+    document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+    return () => observer.disconnect();
   }, []);
 
   const scrollTo = (id) => {
@@ -139,7 +152,7 @@ const Portfolio = () => {
   );
 
   const SectionTitle = ({ children }) => (
-    <h2 style={{
+    <h2 className="section-title" style={{
       fontFamily: "'Playfair Display', serif",
       fontSize: "2rem",
       fontWeight: 700,
@@ -154,7 +167,7 @@ const Portfolio = () => {
   );
 
   const Tag = ({ children }) => (
-    <span style={{
+    <span className="skill-tag" style={{
       display: "inline-block",
       background: "#f5ebe4",
       color: "#7a5c47",
@@ -188,20 +201,150 @@ const Portfolio = () => {
         a { color: #c45d3e; text-decoration: none; }
         a:hover { text-decoration: underline; }
         ::selection { background: #c45d3e; color: #fff; }
+
         @keyframes fadeUp {
           from { opacity: 0; transform: translateY(24px); }
           to { opacity: 1; transform: translateY(0); }
         }
         .fade-up { animation: fadeUp 0.7s ease forwards; }
-        .card-hover:hover { box-shadow: 0 6px 24px rgba(0,0,0,0.08) !important; }
+
+        /* Card hover: lift + shadow + subtle border color */
+        .card-hover {
+          transition: box-shadow 0.3s, transform 0.3s, border-color 0.3s !important;
+        }
+        .card-hover:hover {
+          box-shadow: 0 8px 30px rgba(0,0,0,0.1) !important;
+          transform: translateY(-4px) !important;
+          border-color: #d4a989 !important;
+        }
+
+        /* Project cards */
         .project-toggle { cursor: pointer; }
-        .project-toggle:hover { background: #fdf9f6 !important; }
+        .project-toggle:hover {
+          background: #fdf9f6 !important;
+          transform: translateY(-4px) !important;
+        }
+
+        /* Skill tags: pop on hover */
+        .skill-tag {
+          transition: all 0.25s ease !important;
+          cursor: default;
+        }
+        .skill-tag:hover {
+          background: #c45d3e !important;
+          color: #fff !important;
+          transform: scale(1.08);
+        }
+
+        /* Buttons: scale + glow */
+        .btn-primary {
+          transition: all 0.3s ease !important;
+        }
+        .btn-primary:hover {
+          transform: scale(1.05);
+          box-shadow: 0 4px 20px rgba(196, 93, 62, 0.4);
+        }
+        .btn-outline {
+          transition: all 0.3s ease !important;
+        }
+        .btn-outline:hover {
+          background: #c45d3e !important;
+          color: #fff !important;
+          transform: scale(1.05);
+        }
+
+        /* Headshot: subtle zoom on hover */
+        .headshot-img {
+          transition: transform 0.5s ease, box-shadow 0.5s ease !important;
+        }
+        .headshot-img:hover {
+          transform: scale(1.05);
+          box-shadow: 0 12px 40px rgba(196, 93, 62, 0.25) !important;
+        }
+
+        /* Nav links: underline slide in */
+        .nav-link {
+          position: relative;
+        }
+        .nav-link::after {
+          content: '';
+          position: absolute;
+          bottom: 0;
+          left: 50%;
+          width: 0;
+          height: 2px;
+          background: #c45d3e;
+          transition: all 0.3s ease;
+          transform: translateX(-50%);
+        }
+        .nav-link:hover::after {
+          width: 100%;
+        }
+
+        /* Cert checkmark: bounce on hover */
+        .cert-icon {
+          transition: transform 0.3s ease;
+        }
+        .cert-icon:hover {
+          transform: scale(1.15) rotate(5deg);
+        }
+
+        /* Contact email button glow pulse */
+        .contact-btn {
+          transition: all 0.3s ease !important;
+        }
+        .contact-btn:hover {
+          transform: scale(1.05);
+          box-shadow: 0 4px 25px rgba(196, 93, 62, 0.5);
+        }
+
+        /* Section titles: underline expand on hover */
+        .section-title {
+          display: inline-block;
+          position: relative;
+          cursor: default;
+        }
+        .section-title::after {
+          content: '';
+          position: absolute;
+          bottom: -4px;
+          left: 0;
+          width: 0;
+          height: 2px;
+          background: #c45d3e;
+          transition: width 0.4s ease;
+        }
+        .section-title:hover::after {
+          width: 100%;
+        }
+
+        /* Scroll reveal animation */
+        .reveal {
+          opacity: 0;
+          transform: translateY(30px);
+          transition: opacity 0.6s ease, transform 0.6s ease;
+        }
+        .reveal.visible {
+          opacity: 1;
+          transform: translateY(0);
+        }
+
+        /* LinkedIn arrow hover */
+        .linkedin-link {
+          transition: all 0.3s ease;
+          display: inline-block;
+        }
+        .linkedin-link:hover {
+          letter-spacing: 0.5px;
+        }
+
         @media (max-width: 768px) {
           .desktop-nav { display: none !important; }
           .hero-grid { flex-direction: column !important; text-align: center !important; }
           .hero-grid > div:first-child { align-items: center !important; }
           .section-padding { padding: 3rem 1.2rem !important; }
           .two-col { grid-template-columns: 1fr !important; }
+          .card-hover:hover { transform: none !important; }
         }
         @media (min-width: 769px) {
           .mobile-menu-btn { display: none !important; }
@@ -273,37 +416,38 @@ const Portfolio = () => {
               Third-year engineering student at Queen's University with a focus on mechanical systems, testing and validation, and data-driven problem solving. I like understanding how things work, especially when something goes wrong. I'm interested in the intersection of hands-on engineering and analytical thinking, whether that means building and testing physical systems or digging into data to figure out what happened and why.
             </p>
             <div style={{ display: "flex", gap: "0.8rem", flexWrap: "wrap" }}>
-              <button onClick={() => scrollTo("projects")} style={{
+              <button className="btn-primary" onClick={() => scrollTo("projects")} style={{
                 background: "#c45d3e", color: "#fff", border: "none", borderRadius: "8px",
                 padding: "12px 28px", fontSize: "0.9rem", fontWeight: 500, cursor: "pointer",
-                fontFamily: "'DM Sans', sans-serif", transition: "background 0.3s",
+                fontFamily: "'DM Sans', sans-serif",
               }}>View My Work</button>
-              <button onClick={() => scrollTo("contact")} style={{
+              <button className="btn-outline" onClick={() => scrollTo("contact")} style={{
                 background: "transparent", color: "#c45d3e", border: "2px solid #c45d3e", borderRadius: "8px",
                 padding: "12px 28px", fontSize: "0.9rem", fontWeight: 500, cursor: "pointer",
-                fontFamily: "'DM Sans', sans-serif", transition: "all 0.3s",
+                fontFamily: "'DM Sans', sans-serif",
               }}>Get in Touch</button>
             </div>
           </div>
           <img
-  src={headshot}
-  alt="Sarina Javidan"
-  style={{
-    width: "280px",
-    height: "280px",
-    borderRadius: "50%",
-    objectFit: "cover",
-objectPosition: "center top",
-    border: "4px solid #fff",
-    boxShadow: "0 8px 30px rgba(196, 93, 62, 0.12)",
-    flexShrink: 0,
-  }}
-/>
+            className="headshot-img"
+            src={headshot}
+            alt="Sarina Javidan"
+            style={{
+              width: "280px",
+              height: "280px",
+              borderRadius: "50%",
+              objectFit: "cover",
+              objectPosition: "center top",
+              border: "4px solid #fff",
+              boxShadow: "0 8px 30px rgba(196, 93, 62, 0.12)",
+              flexShrink: 0,
+            }}
+          />
         </div>
       </section>
 
       {/* Education */}
-      <section id="education" className="section-padding" style={{ padding: "4rem 2rem", maxWidth: "1100px", margin: "0 auto" }}>
+      <section id="education" className="section-padding reveal" style={{ padding: "4rem 2rem", maxWidth: "1100px", margin: "0 auto" }}>
         <SectionTitle>Education</SectionTitle>
         <Divider />
         <div className="two-col" style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "1.2rem" }}>
@@ -322,7 +466,7 @@ objectPosition: "center top",
       </section>
 
       {/* Experience */}
-      <section id="experience" className="section-padding" style={{ padding: "4rem 2rem", background: "#fff" }}>
+      <section id="experience" className="section-padding reveal" style={{ padding: "4rem 2rem", background: "#fff" }}>
         <div style={{ maxWidth: "1100px", margin: "0 auto" }}>
           <SectionTitle>Experience</SectionTitle>
           <Divider />
@@ -390,14 +534,14 @@ objectPosition: "center top",
       </section>
 
       {/* Design Teams */}
-      <section id="teams" className="section-padding" style={{ padding: "4rem 2rem", maxWidth: "1100px", margin: "0 auto" }}>
+      <section id="teams" className="section-padding reveal" style={{ padding: "4rem 2rem", maxWidth: "1100px", margin: "0 auto" }}>
         <SectionTitle>Design Teams / Extracurriculars</SectionTitle>
         <Divider />
         <div className="two-col" style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "1.2rem" }}>
           {[
             {
-              team: "Human-Powered Sub-Team",
-              org: "Queen's University Q-HERC Design Team",
+              team: "Q-HERC Human-Powered Sub-Team",
+              org: "Queen's University HERC Design Team",
               date: "Jul 2025 - Present",
               desc: "Responsible for the design and fabrication of the chassis, braking system, and seating layout for a human-powered rover developed for testing on simulated lunar terrain. Involved in both design and construction, ensuring safety, durability, and ergonomic performance. Collaborating with other sub-teams on fabrication planning, simulations, and performance testing. The HP team works alongside the RC team, which will represent Queen's and Canada at the 2026 NASA Human Exploration Rover Challenge.",
               tags: ["Testing and Validation", "Fabrication", "Safety", "SolidWorks"]
@@ -440,7 +584,7 @@ objectPosition: "center top",
       </section>
 
       {/* Projects */}
-      <section id="projects" className="section-padding" style={{ padding: "4rem 2rem", background: "#fff" }}>
+      <section id="projects" className="section-padding reveal" style={{ padding: "4rem 2rem", background: "#fff" }}>
         <div style={{ maxWidth: "1100px", margin: "0 auto" }}>
           <SectionTitle>Projects</SectionTitle>
           <Divider />
@@ -504,7 +648,7 @@ objectPosition: "center top",
       </section>
 
       {/* Certifications */}
-      <section id="certifications" className="section-padding" style={{ padding: "4rem 2rem", background: "#fff" }}>
+      <section id="certifications" className="section-padding reveal" style={{ padding: "4rem 2rem", background: "#fff" }}>
         <div style={{ maxWidth: "1100px", margin: "0 auto" }}>
           <SectionTitle>Certifications</SectionTitle>
           <Divider />
@@ -520,7 +664,7 @@ objectPosition: "center top",
                 alignItems: "center",
                 gap: "1rem",
               }} className="card-hover">
-                <div style={{
+                <div className="cert-icon" style={{
                   width: "48px", height: "48px", borderRadius: "12px",
                   background: "linear-gradient(135deg, #f5ebe4, #e8d5c4)",
                   display: "flex", alignItems: "center", justifyContent: "center",
@@ -583,13 +727,12 @@ objectPosition: "center top",
             I'm always happy to connect with people working in engineering, data, or anything that involves solving interesting problems. Feel free to reach out.
           </p>
           <div style={{ display: "flex", flexDirection: "column", gap: "0.8rem", alignItems: "center" }}>
-            <a href="mailto:sarina.javidan@queensu.ca" style={{
+            <a className="contact-btn" href="mailto:sarina.javidan@queensu.ca" style={{
               color: "#fff", background: "#c45d3e", padding: "14px 36px", borderRadius: "8px",
               fontSize: "0.95rem", fontWeight: 500, textDecoration: "none", display: "inline-block",
-              transition: "background 0.3s",
             }}>sarina.javidan@queensu.ca</a>
             <p style={{ color: "#c9b8a8", fontSize: "0.9rem" }}>+1 (514) 717-9306</p>
-            <a href="https://www.linkedin.com/in/sarina-javidan" target="_blank" rel="noopener noreferrer" style={{
+            <a className="linkedin-link" href="https://www.linkedin.com/in/sarina-javidan" target="_blank" rel="noopener noreferrer" style={{
               color: "#c45d3e", fontSize: "0.9rem",
             }}>LinkedIn Profile →</a>
           </div>
